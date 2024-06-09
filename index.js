@@ -1,23 +1,24 @@
 import express from 'express'
 import mongoose from 'mongoose'
-import router from './router.js'
+import userRouter from './UserRouter.js'
+import dotenv from 'dotenv'
 
+dotenv.config()
 
-const PORT = 5000
-const MONGODB = `mongodb+srv://admin:root@cluster0.imczbuu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+const PORT = process.env.PORT || 5000
+const MONGODB = process.env.MONGODB_URI
 
 const app = express()
-
 app.use(express.json());
-app.use('/api', router)
+app.use('/api', userRouter)
 
-async function startApp() {
+async function startUserApp() {
     try {
-       await mongoose.connect(MONGODB )
+       await mongoose.connect(MONGODB)
         app.listen(PORT, () => console.log('server started on ' + PORT +  ' port'))
     } catch (e) {
         console.log(e)
     }
 }
 
-startApp()
+startUserApp()
